@@ -72,21 +72,31 @@
                 <div class="span6">
                     <div class="widget wviolet">
                         <div data-cc-widget-header title="People"
-                            allow-collapse="true">
+                             allow-collapse="true">
                         </div>
                         <div class="widget-content text-center text-info">
                             <table class="table table-condensed table-striped">
                                 <thead>
                                     <tr>
                                         <th>Titulo 1</th>
+                                        <th>Eliminar</th>
+                                        <th>Actualizar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr data-ng-repeat="p in vm.values">
-                                        <td>{{p}}</td>
+                                        <td>{{p.Nombre}}</td>
+                                        <td ng-click="vm.removeValue(p.Codigo)" >eliminar</td>
+                                        <td ng-click="vm.updateValue(p)" >actualizar</td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
+                            
+                            <button ng-click="vm.NuevoEstudiante()">
+                              Nuevo estudiante
+                            </button>
+
                         </div>
                         <div class="widget-foot">
                             <div class="clearfix"></div>

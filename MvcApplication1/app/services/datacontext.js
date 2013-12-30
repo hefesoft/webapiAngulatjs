@@ -3,15 +3,18 @@
 
     var serviceId = 'datacontext';
     angular.module('app').factory(serviceId,
-        ['common', '$http', datacontext]);
+        ['common', '$http','$resource', datacontext]);
 
-    function datacontext(common, $http) {
+    function datacontext(common, $http, $resource) {
         var $q = common.$q;
 
         var service = {
             getPeople: getPeople,
             getMessageCount: getMessageCount,
-            obtenerValues: obtenerValues
+            obtenerValues: obtenerValues,
+            saveValue: saveValue,
+            removeValue: removeValue,
+            updateValue: updateValue
         };
 
         return service;
@@ -31,20 +34,40 @@
             return $q.when(people);
         }
 
-        function obtenerValues() {
-            var deferred = $q.defer();
-            $http({
-                method: 'GET',
-                url: 'api/values'
-            }).
-             success(function (data, status, headers, config) {
-                 deferred.resolve(data);
-             }).
-             error(function (data, status) {
-                 deferred.reject(data);
-             });
 
-            return deferred.promise;
+        // Como se hace con promesas
+        //function obtenerValues() {
+        //    var deferred = $q.defer();
+        //    $http({
+        //        method: 'GET',
+        //        url: 'api/values'
+        //    }).
+        //     success(function (data, status, headers, config) {
+        //         deferred.resolve(data);
+        //     }).
+        //     error(function (data, status) {
+        //         deferred.reject(data);
+        //     });
+
+        //    return deferred.promise;
+        //}
+        
+        // Como se hace con recursos
+        function obtenerValues() {
+            return $resource('api/values').query();
+        }
+        
+        function saveValue(value) {
+            return $resource('api/values').save(value);
+        }
+        
+        function updateValue(value) {
+            return $http.put('api/values/', value);
+        }
+        
+        function removeValue(value) {
+            
+            return $resource('api/values/'+value).delete();
         }
     }
 })();
