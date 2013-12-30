@@ -1,11 +1,12 @@
 ﻿(function () {
     'use strict';
     var controllerId = 'dashboard';
-    angular.module('app').controller(controllerId, ['common', 'datacontext', dashboard]);
+    angular.module('app').controller(controllerId, ['common', 'datacontext', '$modal', dashboard]);
 
-    function dashboard(common, datacontext) {
+    function dashboard(common, datacontext, $modal) {
         var getLogFn = common.logger.getLogFn;
         var log = getLogFn(controllerId);
+        var estudianteSeleccionado;
 
         var vm = this;
         vm.news = {
@@ -17,10 +18,7 @@
         vm.values = [];
         vm.title = 'Dashboard';
 
-        vm.NuevoEstudiante = function () {
-            var estudiante = new Object();
-            estudiante.Codigo = 3;
-            estudiante.Nombre = 'Nuevo estudiante';
+        vm.NuevoEstudiante = function (estudiante) {
             datacontext.saveValue(estudiante).$promise.then(
                     function (e) {
                         vm.values.push(estudiante);
@@ -29,19 +27,16 @@
             );
         };
 
-        vm.updateValue = function(estudiante) {
-            datacontext.updateValue(estudiante).$promise.then(
-                    function (e) {
-                        // Metodo para actualizar
-                    },
-                    function (e) { alert(e); }
-            );
+        vm.updateValue = function (estudiante) {
+            datacontext.updateValue(estudiante);
         };
 
         vm.removeValue = function (element) {
             datacontext.removeValue(element).$promise.then(
                     function (succes) {
-                        // funcion para eliminar elemento del array
+                        vm.values = _(vm.values).reject(function(el) {
+                             return el.Codigo === element;
+                        });
                     },
                     function (error) {
                         alert(error);
@@ -56,8 +51,6 @@
             common.activateController(promises, controllerId)
                 .then(function () { log('Activated Dashboard View'); });
         }
-
-        
 
         function obtenerValues() {
             vm.values = datacontext.obtenerValues();
@@ -74,5 +67,62 @@
                 return vm.people = data;
             });
         }
+        
+        vm.VentanaNuevoEstudiante = function () {
+            var modalInstance = $modal.open({
+                controller: controlRegistro,
+                templateUrl: 'nuevoEstudiante.html',
+                resolve: {
+                    estudiante: function () {
+                        return ;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+            }, function () {
+
+            });
+        };
+        
+        vm.VentanaEditarEstudiante = function (estudiante) {
+            var modalInstance = $modal.open({
+                controller: controlRegistro,
+                templateUrl: 'nuevoEstudiante.html',
+                resolve: {
+                    estudiante: function () {
+                        return estudiante;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+            }, function () {
+
+            });
+        };
+        
+        var controlRegistro = function ($scope, $modalInstance, estudiante) {
+            
+            if (estudiante === undefined) {
+                $scope.estudiante = { Nombre: null };
+                $scope.accion = "Guardar";
+            } else {
+                $scope.estudiante = estudiante;
+                $scope.accion = "Editar";
+            }
+            
+            $scope.ok = function () {
+                if (estudiante === undefined) {
+                    vm.NuevoEstudiante($scope.estudiante);
+                } else {
+                    vm.updateValue($scope.estudiante);
+                }
+            };
+
+            $scope.cancel = function () {
+                $modalInstance.dismiss('cancel');
+            };
+        };
     }
 })();

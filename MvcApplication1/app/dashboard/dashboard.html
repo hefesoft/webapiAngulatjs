@@ -1,6 +1,9 @@
 ﻿<section id="dashboard-view" class="mainbar" data-ng-controller="dashboard as vm">
     <section class="matter">
         <div class="container-fluid">
+            
+            <div data-ng-include="'/app/templates/NuevoEstudiante.html'"></div>
+
             <div class="row-fluid">
                 <div class="span12">
                     <ul class="today-datas">
@@ -87,14 +90,14 @@
                                     <tr data-ng-repeat="p in vm.values">
                                         <td>{{p.Nombre}}</td>
                                         <td ng-click="vm.removeValue(p.Codigo)" >eliminar</td>
-                                        <td ng-click="vm.updateValue(p)" >actualizar</td>
+                                        <td ng-click="vm.VentanaEditarEstudiante(p)" >actualizar</td>
                                         
                                     </tr>
                                 </tbody>
                             </table>
                             
-                            <button ng-click="vm.NuevoEstudiante()">
-                              Nuevo estudiante
+                            <button ng-click="vm.VentanaNuevoEstudiante()">
+                                Nuevo estudiante
                             </button>
 
                         </div>

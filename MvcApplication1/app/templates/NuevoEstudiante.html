@@ -1,0 +1,58 @@
+﻿
+<script type="text/ng-template" id="nuevoEstudiante.html"> 
+       
+ <form name="form" class="css-form" novalidate>
+    
+     <div class="modal-header">
+          <h3>Registro de nuevo Estudiante</h3>
+     </div>   
+    
+     <div class="modal-body">
+        <div class="container">
+            <div class="form-signin">                                    
+                <input ng-model="estudiante.Nombre" class="input-block-level" placeholder="Nombre estudiante" required>                
+            </div>
+        </div>
+        </div>
+    
+     <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" ng-click="ok()" ng-disabled="form.$invalid" >{{accion}}</button>
+                            <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+     </div>         
+  </form>
+    
+     <style type="text/css">
+      .css-form input.ng-invalid.ng-dirty {
+        background-color: #FA787E;
+      }
+    
+      .css-form input.ng-valid.ng-dirty {
+        background-color: #78FA89;
+      }
+    </style>
+
+
+</script>
+
+
+
+<!--<script type="text/ng-template" id="registrarse.html">
+                        <form>
+                        <div class="modal-header">
+                            <h3>Registro de nuevo usuario</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="form-signin">                                    
+                                    <input type="email" ng-model="usuario.Nombre" class="input-block-level" placeholder="Correo electronico" required>
+                                    <input type="password" ng-model="usuario.Clave" class="input-block-level" placeholder="Clave" required>
+                                    <input type="text" ng-model="usuario.Imei" class="input-block-level" placeholder="Imei" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" ng-click="ok()">Registrarse</button>
+                            <button class="btn btn-warning" ng-click="cancel()">Cancelar</button>
+                        </div>
+                        </form>
+                    </script>-->
